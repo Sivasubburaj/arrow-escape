@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffd6a5">
+  <meta name="description" content="Clear the board. Mind the order. A colorful arrow puzzle game.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Arrow Escape">
+  <title>Arrow Escape</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="sunset">
+  <div id="app">
+
+    <section id="screen-home" class="screen active">
+      <div class="home">
+        <div class="logo" aria-hidden="true">
+          <span class="tile t0"><svg viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></span>
+          <span class="tile t1"><svg viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></span>
+          <span class="tile t2"><svg viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></span>
+          <span class="tile t3"><svg viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></span>
+        </div>
+        <h1 class="title">Arrow <span>Escape</span></h1>
+        <p class="tagline">Clear the board. Mind the order.</p>
+        <button class="btn primary big" id="btn-play">Play <small id="play-level">Level 1</small></button>
+        <button class="btn" id="btn-levels">Levels</button>
+        <div class="home-row">
+          <button class="btn chip" id="btn-theme" aria-label="Change theme">
+            <span class="swatch"><i></i><i></i><i></i><i></i></span>
+            <span id="theme-name">Sunset</span>
+          </button>
+          <button class="btn chip icon" id="btn-sound" aria-label="Toggle sound"></button>
+        </div>
+        <button class="btn chip install" id="btn-install" hidden>
+          <svg class="ic" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5"/><path d="M5 20h14"/></svg>
+          Install app
+        </button>
+      </div>
+    </section>
+
+    <section id="screen-levels" class="screen">
+      <header class="bar">
+        <button class="icon-btn" id="levels-back" aria-label="Back">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h2>Levels</h2>
+        <div class="star-total">
+          <svg class="star on" viewBox="0 0 24 24"><path d="M12 2.6l2.8 5.9 6.5.8-4.8 4.5 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.8-4.5 6.5-.8z"/></svg>
+          <span id="star-total">0</span>
+        </div>
+      </header>
+      <div class="level-grid" id="level-grid"></div>
+    </section>
+
+    <section id="screen-game" class="screen">
+      <header class="bar hud">
+        <button class="icon-btn" id="game-back" aria-label="Level select">
+          <svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></svg>
+        </button>
+        <div class="hud-center">
+          <div class="hud-level" id="hud-level">Level 1</div>
+          <div class="hud-stars" id="hud-stars">
+            <svg class="star on" viewBox="0 0 24 24"><path d="M12 2.6l2.8 5.9 6.5.8-4.8 4.5 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.8-4.5 6.5-.8z"/></svg>
+            <svg class="star on" viewBox="0 0 24 24"><path d="M12 2.6l2.8 5.9 6.5.8-4.8 4.5 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.8-4.5 6.5-.8z"/></svg>
+            <svg class="star on" viewBox="0 0 24 24"><path d="M12 2.6l2.8 5.9 6.5.8-4.8 4.5 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.8-4.5 6.5-.8z"/></svg>
+          </div>
+        </div>
+        <div class="hud-moves" title="Moves / par">
+          <b id="hud-moves">0</b><small>par <span id="hud-par">0</span></small>
+        </div>
+      </header>
+
+      <div class="board-wrap" id="board-wrap">
+        <canvas id="board"></canvas>
+        <div class="toast" id="toast" role="status"></div>
+      </div>
+
+      <footer class="controls">
+        <button class="ctrl" id="btn-undo" title="Undo (Z)">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+          <span>Undo</span>
+        </button>
+        <button class="ctrl" id="btn-restart" title="Restart (R)">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.8-6.3L3.5 8.3"/><path d="M3.5 3.5v4.8h4.8"/></svg>
+          <span>Restart</span>
+        </button>
+        <button class="ctrl" id="btn-hint" title="Hint (H)">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.6V16h6v-.1c0-.6.3-1.2.8-1.6A6.5 6.5 0 0 0 12 2.5z"/></svg>
+          <span>Hint</span>
+        </button>
+      </footer>
+    </section>
+
+    <div class="modal" id="modal-win">
+      <div class="card">
+        <div class="win-stars" id="win-stars">
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2.6l2.8 5.9 6.5.8-4.8 4.5 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.8-4.5 6.5-.8z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2.6l2.8 5.9 6.5.8-4.8 4.5 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.8-4.5 6.5-.8z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2.6l2.8 5.9 6.5.8-4.8 4.5 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.8-4.5 6.5-.8z"/></svg>
+        </div>
+        <h2 id="win-title">Nice work!</h2>
+        <p id="win-stats"></p>
+        <div class="card-actions">
+          <button class="btn" id="win-replay">Replay</button>
+          <button class="btn primary" id="win-next">Next level</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <script src="js/levels.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
